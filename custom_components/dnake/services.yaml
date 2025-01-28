@@ -1,0 +1,72 @@
+unlock:
+  name: Unlock
+  description: Unlock Access
+  fields:
+    dst_id:
+      name: Device ID
+      description: Device ID of SIP Contact, such as 10010101.
+      required: true
+      selector:
+        number:
+          min: 1
+    dst_ip:
+      name: Device IP
+      description: Device IP of SIP Contact, such as 172.16.0.101.
+      required: true
+      selector:
+        text: {}
+
+appoint:
+  name: Appoint
+  description: Elev Appoint
+  fields:
+    dst_id:
+      name: Device ID
+      description: Device ID of SIP Contact, such as 10010101.
+      required: true
+      selector:
+        number:
+          min: 1
+    dst_ip:
+      name: Device IP
+      description: Device IP of SIP Contact, such as 172.16.0.101.
+      required: true
+      selector:
+        text: {}
+    direct:
+      name: Elev Direction
+      description: Elev direction.
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 2
+
+permit:
+  name: Permit
+  description: Elev Permit
+  fields:
+    dst_id:
+      name: Device ID
+      description: Device ID of SIP Contact, such as 10010101.
+      required: true
+      selector:
+        number:
+          min: 1
+    dst_ip:
+      name: Device IP
+      description: Device IP of SIP Contact, such as 172.16.0.101.
+      required: true
+      selector:
+        text: {}
+
+execute:
+  name: Execute
+  description: Execute SIP CMD
+  fields:
+    json_data:
+      name: Json Data
+      description: Json data, such as {}.
+      required: true
+      selector:
+        text: {}

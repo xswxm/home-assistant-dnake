@@ -1,0 +1,12 @@
+{
+  "domain": "dnake",
+  "name": "Dnake",
+  "version": "1.0.0",
+  "documentation": "https://github.com/xswxm/home-assistant-dnake",
+  "issue_tracker": "https://github.com/xswxm/home-assistant-dnake/issues",
+  "config_flow": true,
+  "iot_class": "local_polling",
+  "requirements": ["paho-mqtt==1.6.1"],
+  "dependencies": [],
+  "codeowners": ["@xswxm"]
+}

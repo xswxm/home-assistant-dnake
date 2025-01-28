@@ -1,0 +1,140 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure DNAKE",
+        "data": {
+          "build": "Building",
+          "unit": "Unit",
+          "room": "Room Number",
+          "ip_address": "Indoor Monitor IP Address",
+          "family": "Family ID",
+          "elev_id": "Elevator ID",
+          "ring_port": "Call Listening Port",
+          "stations": "Outdoor Stations (JSON)",
+          "mqtt_support": "Supports MQTT"
+        }
+      },
+      "mqtt": {
+        "title": "Configure MQTT Server",
+        "data": {
+          "mqtt_broker": "Server",
+          "mqtt_port": "Port",
+          "mqtt_username": "Username",
+          "mqtt_password": "Password",
+          "mqtt_keepalive": "Keepalive Interval (s)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure DNAKE",
+        "data": {
+          "ip_address": "Indoor Monitor IP Address",
+          "family": "Family ID",
+          "elev_id": "Elevator ID",
+          "ring_port": "Call Listening Port",
+          "stations": "Outdoor Stations (JSON)",
+          "mqtt_broker": "MQTT Server",
+          "mqtt_port": "MQTT Port",
+          "mqtt_username": "MQTT Username",
+          "mqtt_password": "MQTT Password",
+          "mqtt_keepalive": "MQTT Keepalive Interval (s)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "button": {
+      "unlock": {
+        "name": "Unlock Door"
+      },
+      "elev_permit": {
+        "name": "Grant Elevator Access"
+      },
+      "elev_up": {
+        "name": "Elevator Up"
+      },
+      "elev_down": {
+        "name": "Elevator Down"
+      }
+    },
+    "select": {
+      "contact_id": {
+        "name": "Select Outdoor Station"
+      }
+    },
+    "sensor": {
+      "last_event": {
+        "name": "Last Event",
+        "state": {
+          "ring": "Someone Called the Indoor Monitor",
+          "elev_up": "Elevator Moving Up",
+          "elev_down": "Elevator Moving Down",
+          "permit": "Elevator Access Granted",
+          "unlock": "Door Unlocked"
+        }
+      }
+    }
+  },
+  "services": {
+    "unlock": {
+      "name": "Unlock Door",
+      "description": "Unlock the door",
+      "fields": {
+        "dst_id": {
+          "name": "Device ID",
+          "description": "SIP Contact Device ID, e.g., 10010101."
+        },
+        "dst_ip": {
+          "name": "Device IP",
+          "description": "SIP Contact Device IP, e.g., 172.16.0.101."
+        }
+      }
+    },
+    "appoint": {
+      "name": "Elevator Appointment",
+      "description": "Control elevator direction (up or down)",
+      "fields": {
+        "dst_id": {
+          "name": "Outdoor Station ID",
+          "description": "SIP Contact Device ID, e.g., 10010101."
+        },
+        "dst_ip": {
+          "name": "Outdoor Station IP",
+          "description": "SIP Contact Device IP, e.g., 172.16.0.101."
+        },
+        "direct": {
+          "name": "Direction",
+          "description": "Control elevator direction: 1 for Up, 2 for Down."
+        }
+      }
+    },
+    "permit": {
+      "name": "Grant Elevator Access",
+      "description": "Grant access to specific elevator floors.",
+      "fields": {
+        "dst_id": {
+          "name": "Outdoor Station ID",
+          "description": "SIP Contact Device ID, e.g., 10010101."
+        },
+        "dst_ip": {
+          "name": "Outdoor Station IP",
+          "description": "SIP Contact Device IP, e.g., 172.16.0.101."
+        }
+      }
+    },
+    "execute": {
+      "name": "Execute Command",
+      "description": "Execute a command, supporting more complex instructions.",
+      "fields": {
+        "json_data": {
+          "name": "JSON Data",
+          "description": "JSON data."
+        }
+      }
+    }
+  }
+}

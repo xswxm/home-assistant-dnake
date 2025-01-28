@@ -1,0 +1,142 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "配置DNAKE",
+        "data": {
+          "build": "栋号",
+          "unit": "单元",
+          "room": "房号",
+          "ip_address": "室内机IP地址",
+          "family": "家庭ID",
+          "elev_id": "电梯ID",
+          "ring_port": "呼叫监听端口",
+          "stations": "室外机设备 (JSON格式)",
+          "mqtt_support": "是否支持MQTT"
+        }
+      },
+      "mqtt": {
+        "title": "配置MQTT服务器",
+        "data": {
+          "mqtt_broker": "服务器",
+          "mqtt_port": "端口",
+          "mqtt_username": "用户名",
+          "mqtt_password": "密码",
+          "mqtt_keepalive": "保活间隔 (s)",
+          "mqtt_topic": "订阅频道"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "配置DNAKE",
+        "data": {
+          "ip_address": "室内机IP地址",
+          "family": "家庭ID",
+          "elev_id": "电梯ID",
+          "ring_port": "呼叫监听端口",
+          "stations": "室外机设备 (JSON格式)",
+          "mqtt_broker": "MQTT服务器",
+          "mqtt_port": "MQTT端口",
+          "mqtt_username": "MQTT用户名",
+          "mqtt_password": "MQTT密码",
+          "mqtt_keepalive": "MQTT保活间隔 (s)",
+          "mqtt_topic": "MQTT订阅频道"
+        }
+      }
+    }
+  },
+  "entity": {
+    "button": {
+      "unlock": {
+        "name": "打开门禁"
+      },
+      "elev_permit": {
+        "name": "开放楼层"
+      },
+      "elev_up": {
+        "name": "电梯上行"
+      },
+      "elev_down": {
+        "name": "电梯下行"
+      }
+    }, 
+    "select": {
+      "contact_id": {
+        "name": "选择门禁设备"
+      }
+    }, 
+    "sensor": {
+      "last_event": {
+        "name": "最新事件",
+        "state": {
+          "ring": "有人呼叫室内机",
+          "elev_up": "电梯上行",
+          "elev_down": "电梯下行",
+          "permit": "开放楼层",
+          "unlock": "打开门禁"
+        }
+      }
+    }
+  }, 
+  "services": {
+    "unlock": {
+      "name": "打开门禁",
+      "description": "打开门禁",
+      "fields": {
+        "dst_id": {
+          "name": "设备ID",
+          "description": "SIP 联系人的设备ID，例如 10010101。"
+        },
+        "dst_ip": {
+          "name": "设备IP",
+          "description": "SIP 联系人的设备IP，例如 172.16.0.101。"
+        }
+      }
+    },
+    "appoint": {
+      "name": "预约电梯",
+      "description": "控制电梯上行或下行",
+      "fields": {
+        "dst_id": {
+          "name": "室外机ID",
+          "description": "SIP 联系人的设备ID，例如 10010101。"
+        },
+        "dst_ip": {
+          "name": "室外机IP",
+          "description": "SIP 联系人的设备IP，例如 172.16.0.101。"
+        },
+        "direct": {
+          "name": "运行方向",
+          "description": "控制电梯运行方向。1: 上行，2: 下行。"
+        }
+      }
+    },
+    "permit": {
+      "name": "开放楼层",
+      "description": "开放电梯楼层。",
+      "fields": {
+        "dst_id": {
+          "name": "室外机ID",
+          "description": "SIP 联系人的设备ID，例如 10010101。"
+        },
+        "dst_ip": {
+          "name": "室外机IP",
+          "description": "SIP 联系人的设备IP，例如 172.16.0.101。"
+        }
+      }
+    },
+    "execute": {
+      "name": "执行命令",
+      "description": "执行命令，支持更复杂的命令。",
+      "fields": {
+        "json_data": {
+          "name": "Json 数据",
+          "description": "Json 数据。"
+        }
+      }
+    }
+  }
+}
