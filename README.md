@@ -2,7 +2,7 @@
 
 通过HA集成接入Dnake后可以实现远程控制门禁开启和电梯、监听室内机呼叫并推送等功能。
 
-<a href="demo"><img src="https://github.com/xswxm/home-assistant-dnake/blob/main/demo.png?raw=true" width="480" ></a>
+<a href="demo"><img src="https://github.com/xswxm/home-assistant-dnake/blob/main/demo.gif?raw=true" width="480" ></a>
 
 **注意：切勿利用本教程破坏互联网安全，影响居民生活。**
 
