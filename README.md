@@ -100,10 +100,14 @@ vi ex_init.sh
 - 编辑完成后运行以下命令检查程序是否可以正常运行（注意将 **172.16.1.233** 替换成你的室内机IP）：
 
 ```bash
-/dnake/data/sip_monitor 172.16.1.233:30884 &
+/dnake/data/sip_monitor 172.16.1.233:30884
 ```
 
 如果正常，运行 `reboot` 重启室内机。
+
+> **提示1:** 因为Dnake室内机有多个不同的平台，如果运行异常，请先执行 **cat /proc/cpuinfo** 确认你的设备平台。目前针对Armv7已单独编译 **sip_monitor_armv7l**，并提供对应 **tcpdump** 执行文件，请将其拷贝到室内机后添加可执行权限后再尝试运行
+
+> **提示2:** 如果flash空间不足，建议拷贝至 **/tmp** 目录下运行，但这样实现开机自启就会比较复杂，可能每次重启都需要手动下载一遍，除非自己额外部署http服务，通过脚本实现每次开机自动下载可执行文件。
 
 ---
 
@@ -182,9 +186,6 @@ actions:
         trigger: event
     timeout: 30
     continue_on_timeout: false
-  - data: {}
-    action: script.dnake
-    enabled: false
   - action: dnake.unlock
     metadata: {}
     data:
