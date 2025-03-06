@@ -181,7 +181,13 @@ class MQTTClient:
             self.client.disconnect()
 
         client_id = f'{DOMAIN}_{int(time.time())}'
-        self.client = mqtt.Client(client_id)
+        if hasattr(mqtt, 'CallbackAPIVersion'):
+            self.client = mqtt.Client(
+                mqtt.CallbackAPIVersion.VERSION1,
+                client_id=client_id
+            )
+        else:
+            self.client = mqtt.Client(client_id=client_id)
         self.client.username_pw_set(self.username, self.password)
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
