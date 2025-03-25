@@ -2,6 +2,7 @@ from homeassistant.components.camera import Camera, CameraEntityFeature
 from homeassistant.exceptions import TemplateError
 from homeassistant.helpers.template import Template
 import yarl
+from typing import Final
 
 from .const import (
     DOMAIN, 
@@ -10,15 +11,20 @@ from .const import (
 
     DEVICE_ID, 
     STATIONS, 
+    CONF_LIVE_SUPPORT,
 )
 
 import logging
 _LOGGER = logging.getLogger(__name__)
 
+RTSP_USERNAME: Final = "admin"
+RTSP_PASSWORD: Final = "123456"
+
 async def async_setup_entry(hass, entry, async_add_entities):
     sensors = []
-    for key, val in hass.data[DOMAIN][STATIONS].items():
-        sensors.append(RTSPCamera(hass=hass, device_id=hass.data[DOMAIN][DEVICE_ID], name=f'{DOMAIN}_{key}', address=val))
+    if entry.data[CONF_LIVE_SUPPORT]:
+        for key, val in hass.data[DOMAIN][STATIONS].items():
+            sensors.append(RTSPCamera(hass=hass, device_id=hass.data[DOMAIN][DEVICE_ID], name=f'{DOMAIN}_{key}', address=val))
     async_add_entities(sensors)
 
 class RTSPCamera(Camera):
@@ -75,7 +81,7 @@ class RTSPCamera(Camera):
         try:
             stream_url = self._stream_source.async_render(parse_result=False)
             url = yarl.URL(stream_url)
-            url = url.with_user("admin").with_password("123456")
+            url = url.with_user(RTSP_USERNAME).with_password(RTSP_PASSWORD)
             return str(url)
         except TemplateError as err:
             _LOGGER.error("Error parsing template %s: %s", self._stream_source, err)

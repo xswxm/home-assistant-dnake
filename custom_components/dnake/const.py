@@ -4,7 +4,7 @@ from typing import Final
 DOMAIN: Final = "dnake"
 
 MANUFACTURER: Final = "dnake"
-SW_VERSION: Final = "1.0.0"
+SW_VERSION: Final = "1.1.0"
 
 DEVICE_ID: Final = "device_id"
 
@@ -37,10 +37,12 @@ DEFAULT_PORT: Final = 5060
 DEFAULT_FAMILY: Final = 1
 DEFAULT_ELEV_ID: Final = 0
 
+CONF_OPENWRT_ADDREDD: Final = "openwrt_address"
 CONF_RING_PORT: Final = 'ring_port'
 DEFAULT_RING_PORT: Final = 30884
 
 CONF_STATIONS: Final = 'stations'
+CONF_LIVE_SUPPORT: Final = 'live_supprt'
 
 from pathlib import Path
 STATION_FILENAME: Final = Path(__file__).parent / 'stations.json'

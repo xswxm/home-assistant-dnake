@@ -3,6 +3,7 @@ from datetime import datetime
 import json
 import socket
 import random
+import aiohttp
 import asyncio
 
 import paho.mqtt.client as mqtt
@@ -22,7 +23,9 @@ from .const import (
     CONF_ELEV_ID, 
     CONF_IP_ADDRESS, 
     CONF_PORT, 
-    
+
+    CONF_OPENWRT_ADDREDD,
+
     SIP_PORT, 
 
     CONF_MQTT_SUPPORT, 
@@ -162,6 +165,97 @@ class DnakeUDPClient:
         sip_message = f'{sip_line}\r\n{sip_header}\r\n\r\n{sip_body}'
         return await self.send_msg(dst_ip=dst_ip, dst_port=SIP_PORT, msg=sip_message)
 
+
+class DnakeUDPClientRemote:
+    def __init__(self, build = 16, unit = 1, room = 2801, ip = '172.16.0.1', port = SIP_PORT, openwrt_address = None) -> None:
+        self.build = build
+        self.unit = unit
+        self.room = room
+        self.src_id = f'{build}{unit:0>2d}{room:0>4d}'
+        self.src_ip = ip
+        self.src_port = port
+
+        self.dst_id = '10019901'
+        self.dst_ip = '172.16.0.1'
+        self.dst_port = SIP_PORT
+        self.openwrt_address = openwrt_address
+
+    async def post_request(self, data):
+        _LOGGER.info(f"Aiohttp send: {data}")
+        async with aiohttp.ClientSession() as session:
+            try:
+                async with session.post(self.openwrt_address, data=data) as response:
+                    status = response.status
+                    response_text = await response.text()
+                    
+                    _LOGGER.info(f"Aiohttp sent with status {status} response {response_text}.")
+            except aiohttp.ClientError as e:
+                _LOGGER.warning(f"Aiohttp failed: {str(e)}")
+
+    async def join(self, dst_id, dst_ip, dst_port, branch = None, tag = None, call_id = None):
+        data = {
+            "src_ip": self.src_ip,
+            "dst_ip": dst_ip if dst_ip else self.dst_ip,
+            "src_id": self.src_id,
+            "dst_id": dst_id if dst_id else self.dst_id,
+            "event": 'join',
+            "build": self.build,
+            "unit": self.unit,
+            "floor": self.room // 100,
+            "family": '1',
+            "elev": '1',
+            "direct": '1',
+        }
+        await self.post_request(data=data)
+
+    async def appoint(self, dst_id, dst_ip, dst_port, elev, direct, build, unit, floor, family = 1, branch = None, tag = None, call_id = None):
+        data = {
+            "src_ip": self.src_ip,
+            "dst_ip": dst_ip if dst_ip else self.dst_ip,
+            "src_id": self.src_id,
+            "dst_id": dst_id if dst_id else self.dst_id,
+            "event": 'appoint',
+            "build": build if build else self.build,
+            "unit": unit if unit else self.unit,
+            "floor": floor if floor else self.room // 100,
+            "family": family,
+            "elev": elev,
+            "direct": direct,
+        }
+        await self.post_request(data=data)
+
+    async def unlock(self, dst_id, dst_ip, dst_port, build, unit, floor, family = 1, branch = None, tag = None, call_id = None):
+        data = {
+            "src_ip": self.src_ip,
+            "dst_ip": dst_ip if dst_ip else self.dst_ip,
+            "src_id": self.src_id,
+            "dst_id": dst_id if dst_id else self.dst_id,
+            "event": 'unlock',
+            "build": build if build else self.build,
+            "unit": unit if unit else self.unit,
+            "floor": floor if floor else self.room // 100,
+            "family": family,
+            "elev": '1',
+            "direct": '1',
+        }
+        await self.post_request(data=data)
+
+    async def permit(self, dst_id, dst_ip, dst_port, elev, build, unit, floor, family = 1, branch = None, tag = None, call_id = None):
+        data = {
+            "src_ip": self.src_ip,
+            "dst_ip": dst_ip if dst_ip else self.dst_ip,
+            "src_id": self.src_id,
+            "dst_id": dst_id if dst_id else self.dst_id,
+            "event": 'permit',
+            "build": build if build else self.build,
+            "unit": unit if unit else self.unit,
+            "floor": floor if floor else self.room // 100,
+            "family": family,
+            "elev": elev,
+            "direct": '1',
+        }
+        await self.post_request(data=data)
+
 class MQTTClient:
     def __init__(self, hass: HomeAssistant, config):
         self.hass = hass
@@ -247,19 +341,31 @@ class Client(MQTTClient):
         self.elev = config[CONF_ELEV_ID]
         self.src_port = config[CONF_PORT]
         self.family = config[CONF_FAMILY]
+        self.openwrt_address = config[CONF_OPENWRT_ADDREDD]
 
         self.dnake_client = None
 
     async def initialize(self):
         if not self.src_ip:
             self.src_ip = await self.update_src_ip()
-        self.dnake_client = DnakeUDPClient(
-            build=self.build, 
-            unit=self.unit, 
-            room=self.room, 
-            ip=self.src_ip, 
-            port=self.src_port
-        )
+        
+        if (self.openwrt_address):
+            self.dnake_client = DnakeUDPClientRemote(
+                build=self.build, 
+                unit=self.unit, 
+                room=self.room, 
+                ip=self.src_ip, 
+                port=self.src_port,
+                openwrt_address=self.openwrt_address,
+            )
+        else:
+            self.dnake_client = DnakeUDPClient(
+                build=self.build, 
+                unit=self.unit, 
+                room=self.room, 
+                ip=self.src_ip, 
+                port=self.src_port,
+            )
         if self.mqtt_support:
             await self.mqtt_connect()
 

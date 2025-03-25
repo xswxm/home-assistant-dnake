@@ -10,8 +10,10 @@
           "ip_address": "室内机IP地址",
           "family": "家庭ID",
           "elev_id": "电梯ID",
+          "openwrt_address": "OpenWrt IP地址",
           "ring_port": "呼叫监听端口",
           "stations": "室外机设备 (JSON格式)",
+          "live_supprt": "直播流支持",
           "mqtt_support": "是否支持MQTT"
         }
       },
@@ -36,8 +38,10 @@
           "ip_address": "室内机IP地址",
           "family": "家庭ID",
           "elev_id": "电梯ID",
+          "openwrt_address": "OpenWrt IP地址",
           "ring_port": "呼叫监听端口",
           "stations": "室外机设备 (JSON格式)",
+          "live_supprt": "直播流支持",
           "mqtt_broker": "MQTT服务器",
           "mqtt_port": "MQTT端口",
           "mqtt_username": "MQTT用户名",

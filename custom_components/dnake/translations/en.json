@@ -10,8 +10,10 @@
           "ip_address": "Indoor Monitor IP Address",
           "family": "Family ID",
           "elev_id": "Elevator ID",
+          "openwrt_address": "OpenWrt IP Address",
           "ring_port": "Call Listening Port",
           "stations": "Outdoor Stations (JSON)",
+          "live_supprt": "Live Streaming",
           "mqtt_support": "Supports MQTT"
         }
       },
@@ -35,8 +37,10 @@
           "ip_address": "Indoor Monitor IP Address",
           "family": "Family ID",
           "elev_id": "Elevator ID",
+          "openwrt_address": "OpenWrt IP Address",
           "ring_port": "Call Listening Port",
           "stations": "Outdoor Stations (JSON)",
+          "live_supprt": "Live Streaming",
           "mqtt_broker": "MQTT Server",
           "mqtt_port": "MQTT Port",
           "mqtt_username": "MQTT Username",

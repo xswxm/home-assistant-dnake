@@ -19,8 +19,12 @@ from .const import (
     DEFAULT_PORT,
     DEFAULT_FAMILY,
     DEFAULT_ELEV_ID, 
+    
+    CONF_OPENWRT_ADDREDD,
     CONF_RING_PORT,
     CONF_STATIONS,
+
+    CONF_LIVE_SUPPORT,
 
     SIP_PORT, 
     DEFAULT_RING_PORT,
@@ -60,8 +64,12 @@ class DnakeConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self.dnake_port = DEFAULT_PORT
         self.dnake_family = DEFAULT_FAMILY
         self.dnake_elev_id = DEFAULT_ELEV_ID
+
+        self.openwrt_address = ''
         self.ring_port = None
         self.dnake_stations = {}
+        
+        self.live_support = False
 
         self.mqtt_support = False
         self.mqtt_broker = None
@@ -83,7 +91,10 @@ class DnakeConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             CONF_PORT: self.dnake_port,
                             CONF_FAMILY: self.dnake_family,
                             CONF_ELEV_ID: self.dnake_elev_id,
+                            
+                            CONF_OPENWRT_ADDREDD: self.openwrt_address,
                             CONF_RING_PORT: self.ring_port,
+                            CONF_LIVE_SUPPORT: self.live_support,
 
                             CONF_MQTT_SUPPORT: self.mqtt_support,
                             CONF_MQTT_BROKER: self.mqtt_broker,
@@ -106,7 +117,11 @@ class DnakeConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self.dnake_port = SIP_PORT
             self.dnake_family = user_input.get(CONF_FAMILY, DEFAULT_FAMILY)
             self.dnake_elev_id = user_input.get(CONF_ELEV_ID, DEFAULT_ELEV_ID)
+
+            self.openwrt_address = user_input[CONF_OPENWRT_ADDREDD]
             self.ring_port = user_input[CONF_RING_PORT]
+            self.live_support = user_input[CONF_LIVE_SUPPORT]
+
             self.mqtt_support = user_input[CONF_MQTT_SUPPORT]
             
             try:
@@ -135,8 +150,13 @@ class DnakeConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_FAMILY, description="Family ID", default=DEFAULT_FAMILY): int,
                     vol.Required(CONF_ELEV_ID, description="Elev ID", default=DEFAULT_ELEV_ID): int,
                     # vol.Optional(CONF_PORT, description="SIP port", default=SIP_PORT): int,
+
+                    vol.Optional(CONF_OPENWRT_ADDREDD, description="Openwrt Address", default=''): str,
                     vol.Required(CONF_RING_PORT, description="Ring listening port", default=DEFAULT_RING_PORT): int,
                     vol.Optional(CONF_STATIONS, description="Outdoor Stations"): str,
+
+                    vol.Required(CONF_LIVE_SUPPORT, description="Live Support", default=True): bool,
+
                     vol.Required(CONF_MQTT_SUPPORT, description="MQTT Support", default=False): bool,
                 }
             ),
