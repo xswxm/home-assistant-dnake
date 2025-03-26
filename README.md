@@ -148,11 +148,11 @@ vi ex_init.sh
 
 网上有很多 **小米R1CL** 进ssh刷 Breed 的教程，这里不做展开描述，注意备份数据即可。
 
-输入 `Breed` 后，电脑网线连接路由器的默认 `WAN口`（蓝色端口），按住 **小米R1CL** Reset 按键插电，设备会自动进入 `Breed`。访问 `192.168.1.1`选择定制固件并刷入，注意核对下MD5，防止文件下载错误。
+刷入 `Breed` 后，电脑网线连接路由器的默认 `WAN口`（蓝色端口），按住 **小米R1CL** Reset 按键插电，设备会自动进入 `Breed`。访问 `192.168.1.1`选择定制固件并刷入，注意核对下MD5，防止文件下载错误。
 
 <a href="刷机"><img src="https://github.com/xswxm/home-assistant-dnake/blob/main/doc/2m2_flash.png?raw=true" width="450" ></a>
 
-#### 2. 连接WiFi
+#### 3. 连接WiFi
 
 由于默认系统关闭了dhcp等功能，需要手动设置电脑网卡 ip 为 `192.168.5.x` 网段才能访问到刚刷入的 OpenWrt 系统。
 
@@ -168,13 +168,13 @@ vi ex_init.sh
 
 连上网后就可以把连电脑的网线拔了，后续可以直接输入 **小米R1CL** 无线获取到的ip地址即可访问系统。
 
-#### 3. 连接网线
+#### 4. 连接网线
 
 将门禁室内机原来的网线插入 **小米R1CL** 中间的 `LAN口`，然后再用一根短一点的网线连接室内机和 **小米R1CL** 的另一个 `LAN口`。
 
 <a href="连接网络"><img src="https://github.com/xswxm/home-assistant-dnake/blob/main/doc/2m2_connection.png?raw=true" width="450" ></a>
 
-#### 4. 配置网络
+#### 5. 配置网络
 
 **小米R1CL** 进入到 **网络 -> 端口 -> doorlink**，参考之前室内机的IP和网段，填入一个不会引起冲突的IP地址和网段（默认为 `172.16.0.201`）。
 
@@ -188,7 +188,7 @@ vi ex_init.sh
 
 <a href="ping测试"><img src="https://github.com/xswxm/home-assistant-dnake/blob/main/doc/2m2_op_ping.png?raw=true" width="450" ></a>
 
-#### 5. 软件配置
+#### 6. 软件配置
 
 **小米R1CL** 进入到 **服务 -> 门禁助手**，参考以下配置：
 
@@ -221,7 +221,7 @@ vi ex_init.sh
 
 > **提示:** <br>a. 如果保存并应用后还是显示`运行中`，请先取消勾选`启用服务`，保存并应用后再重新启用。<br>b. 如果不知道SIP信息，可以默认留空，程序正常运行后，使用室外机呼叫下室内机，正常情况下程序会自动刷新SIP信息。
 
-#### 6. 供电方案
+#### 7. 供电方案
 
 由于`小米R1CL`使用的5V供电，而一般室内机使用的12V电压，所以可能需要借助DC降压模块将电压将12V降压至5V，网上有很多现成的模块，买来简单手动改装下即可，供电线可以搜索**一分二 2.54 延长线**找到。
 
