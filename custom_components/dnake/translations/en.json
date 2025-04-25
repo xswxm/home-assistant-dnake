@@ -81,6 +81,11 @@
           "unlock": "Door Unlocked"
         }
       }
+    }, 
+    "binary_sensor": {
+      "ring_status": {
+        "name": "Ring Status"
+      }
     }
   },
   "services": {

@@ -1,6 +1,5 @@
-from homeassistant.components.sensor import (
-    SensorEntity,
-)
+from homeassistant.core import HomeAssistant
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.restore_state import RestoreEntity
@@ -19,12 +18,13 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     sensors = [
-        DnakeSensor(device_id=hass.data[DOMAIN][DEVICE_ID], sensor_id=SENSOR_LAST_EVENT, translation_key='last_event'),
+        DnakeSensor(hass=hass, device_id=hass.data[DOMAIN][DEVICE_ID], sensor_id=SENSOR_LAST_EVENT, translation_key='last_event'),
     ]
     async_add_entities(sensors)
 
 class DnakeSensor(SensorEntity, RestoreEntity):
-    def __init__(self, device_id, sensor_id, translation_key):
+    def __init__(self, hass: HomeAssistant, device_id: str, sensor_id: str, translation_key: str):
+        self.hass = hass
         self._device_id = device_id
         self._sensor_id = sensor_id
         self._state = None

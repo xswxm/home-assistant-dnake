@@ -10,6 +10,7 @@ DEVICE_ID: Final = "device_id"
 
 SIP_PORT: Final = 5060
 SENSOR_LAST_EVENT: Final = 'last_event'
+SENSOR_RING_STATUS: Final = 'ring_status'
 
 # MQTT Server Configuration
 CONF_MQTT_SUPPORT: Final = "mqtt_support"
@@ -55,5 +56,6 @@ PLATFORMS: Final = [
     Platform.BUTTON,
     Platform.SELECT,
     Platform.CAMERA,
-    Platform.SENSOR
+    Platform.SENSOR,
+    Platform.BINARY_SENSOR,
 ]

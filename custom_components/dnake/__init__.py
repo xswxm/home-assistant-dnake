@@ -22,6 +22,7 @@ from .const import (
     STATION_LIST,
 
     SENSOR_LAST_EVENT, 
+    SENSOR_RING_STATUS, 
     STATION_FILENAME, 
 )
 from .utils import save_json, load_json
@@ -150,6 +151,14 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self._hass,
                 f"{DOMAIN}_{self._hass.data[DOMAIN][DEVICE_ID]}_{SENSOR_LAST_EVENT}",
                 state_attributes
+            )
+
+            # update ring status sensor
+            self._hass.loop.call_soon_threadsafe(
+                async_dispatcher_send,
+                self._hass,
+                f"{DOMAIN}_{self._hass.data[DOMAIN][DEVICE_ID]}_{SENSOR_RING_STATUS}",
+                True
             )
 
             # mqtt publish

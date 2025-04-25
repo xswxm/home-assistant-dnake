@@ -83,6 +83,11 @@
           "unlock": "打开门禁"
         }
       }
+    }, 
+    "binary_sensor": {
+      "ring_status": {
+        "name": "呼叫状态"
+      }
     }
   }, 
   "services": {

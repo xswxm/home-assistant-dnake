@@ -16,6 +16,7 @@ from .const import (
     DOMAIN, 
     DEVICE_ID, 
     SENSOR_LAST_EVENT, 
+    SENSOR_RING_STATUS, 
 
     CONF_BUILD, 
     CONF_UNIT, 
@@ -198,6 +199,8 @@ class DnakeUDPClientRemote:
             "dst_ip": dst_ip if dst_ip else self.dst_ip,
             "src_id": self.src_id,
             "dst_id": dst_id if dst_id else self.dst_id,
+            "src_port": self.src_port,
+            "dst_port": dst_port if dst_port else self.dst_port,
             "event": 'join',
             "build": self.build,
             "unit": self.unit,
@@ -214,6 +217,8 @@ class DnakeUDPClientRemote:
             "dst_ip": dst_ip if dst_ip else self.dst_ip,
             "src_id": self.src_id,
             "dst_id": dst_id if dst_id else self.dst_id,
+            "src_port": self.src_port,
+            "dst_port": dst_port if dst_port else self.dst_port,
             "event": 'appoint',
             "build": build if build else self.build,
             "unit": unit if unit else self.unit,
@@ -230,6 +235,8 @@ class DnakeUDPClientRemote:
             "dst_ip": dst_ip if dst_ip else self.dst_ip,
             "src_id": self.src_id,
             "dst_id": dst_id if dst_id else self.dst_id,
+            "src_port": self.src_port,
+            "dst_port": dst_port if dst_port else self.dst_port,
             "event": 'unlock',
             "build": build if build else self.build,
             "unit": unit if unit else self.unit,
@@ -246,6 +253,8 @@ class DnakeUDPClientRemote:
             "dst_ip": dst_ip if dst_ip else self.dst_ip,
             "src_id": self.src_id,
             "dst_id": dst_id if dst_id else self.dst_id,
+            "src_port": self.src_port,
+            "dst_port": dst_port if dst_port else self.dst_port,
             "event": 'permit',
             "build": build if build else self.build,
             "unit": unit if unit else self.unit,
@@ -393,6 +402,13 @@ class Client(MQTTClient):
             f"{DOMAIN}_{self.hass.data[DOMAIN][DEVICE_ID]}_{SENSOR_LAST_EVENT}",
             state_attributes
         )
+        if state_attributes['event'] == 'ring':
+            self.hass.loop.call_soon_threadsafe(
+                async_dispatcher_send,
+                self.hass,
+                f"{DOMAIN}_{self.hass.data[DOMAIN][DEVICE_ID]}_{SENSOR_RING_STATUS}",
+                True
+            )
 
     async def process_message(self, message):
         try:
